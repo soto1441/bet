@@ -39,11 +39,6 @@ li.me{font-weight:700;color:var(--ac)}
 .admp input{padding:7px 8px;font-size:14px;min-width:0}
 .admp button{padding:7px 10px;font-size:13px;flex:0 0 auto}
 select{width:100%;padding:11px 12px;border:1px solid var(--bd);border-radius:10px;background:var(--bg);color:var(--tx);font-size:16px}
-.sr{padding:10px 0;border-bottom:1px solid var(--bd)}
-.sr:last-child{border:0}
-.sr .top{display:flex;justify-content:space-between;align-items:baseline;font-size:15px}
-.sr svg{width:100%;height:34px;display:block;margin:4px 0}
-.sr .row button{flex:0 0 auto;padding:9px 16px}
 .sec{margin:12px 0 4px;font-size:13px;color:var(--mut)}
 </style>
 </head>
@@ -51,22 +46,10 @@ select{width:100%;padding:11px 12px;border:1px solid var(--bd);border-radius:10p
 <main>
   <h1>🎲 포인트 베팅 게임</h1>
   <p class="sub">가상 포인트로만 즐기는 게임이에요. 실제 돈이나 상품은 걸리지 않아요.</p>
-  <div class="card hide" id="banner" style="border-color:var(--ac);font-weight:600"></div>
 
   <section class="card" id="join">
     <input id="nick" maxlength="10" placeholder="닉네임을 입력하세요 (최대 10자)">
     <div class="row" style="margin-top:10px"><button id="joinBtn">시작하기 (1,000P 지급)</button></div>
-  </section>
-
-  <div class="row hide" id="tabs" style="margin-bottom:14px"><button class="alt sel" id="tabBet">🎲 베팅</button><button class="alt" id="tabStock">📈 가짜 주식</button></div>
-
-  <section class="card hide" id="stock">
-    <div class="sub" id="sWho"></div>
-    <div style="display:flex;justify-content:space-between;gap:8px"><div>보유 포인트<br><strong id="sPts">0P</strong></div><div style="text-align:right">주식 평가액<br><strong id="sVal">0P</strong></div></div>
-    <div class="notice" id="sTick"></div>
-    <div id="sList"></div>
-    <div class="msg" id="sMsg"></div>
-    <div class="notice">모든 참가자가 같은 가격을 봐요. 팔 때 수수료 1%가 붙어요. 가상 포인트 게임이에요.</div>
   </section>
 
   <section class="card hide" id="game">
@@ -82,7 +65,7 @@ select{width:100%;padding:11px 12px;border:1px solid var(--bd);border-radius:10p
 
   <section class="card">
     <strong>🏆 랭킹</strong>
-    <div class="notice" style="margin:2px 0 4px">점수 = 보유 포인트 + 주식 평가액 − (재시작 횟수 × 1,000)</div>
+    <div class="notice" style="margin:2px 0 4px">점수 = 보유 포인트 − (재시작 횟수 × 1,000)</div>
     <ol id="rank"><li><span>불러오는 중…</span></li></ol>
     <div class="notice" id="notice"></div>
   </section>
@@ -93,20 +76,7 @@ select{width:100%;padding:11px 12px;border:1px solid var(--bd);border-radius:10p
     <strong>🛠 관리자 모드</strong>
     <div class="sec">전체 설정 (모든 참가자 공통)</div>
     <div class="row"><input id="cfgRate" type="number" min="0" max="100" step="1" placeholder="성공 확률 (%)" aria-label="성공 확률 퍼센트"><input id="cfgPay" type="number" min="0.1" step="0.1" placeholder="성공 배수 (배)" aria-label="성공 시 배수"></div>
-    <div class="row" style="margin-top:8px"><input id="cfgMax" type="number" min="0" step="10" placeholder="최대 베팅 한도 (0 = 무제한)" aria-label="최대 베팅 한도"></div>
     <div class="row" style="margin-top:8px"><button id="cfgSave">전체 설정 저장</button></div>
-    <div class="sec">운영 스위치</div>
-    <div class="row"><button class="alt" id="tgBet">베팅 잠금: 꺼짐</button><button class="alt" id="tgStock">주식 거래 정지: 꺼짐</button></div>
-    <div class="sec">공지 (모든 참가자 화면 맨 위에 표시)</div>
-    <div class="row"><input id="noticeIn" maxlength="80" placeholder="공지 내용 (최대 80자)" aria-label="공지 내용"></div>
-    <div class="row" style="margin-top:8px"><button id="noticeSet">공지 게시</button><button class="alt" id="noticeDel">공지 내리기</button></div>
-    <div class="sec">주가 이벤트 (호재 / 악재)</div>
-    <div class="row"><input id="modPct" type="number" min="1" max="90" value="30" placeholder="변동 %" aria-label="변동 퍼센트"><input id="modMin" type="number" min="1" value="10" placeholder="지속 시간(분)" aria-label="지속 시간(분)"></div>
-    <div id="modBox"></div>
-    <div class="row" style="margin-top:8px"><button class="alt" id="modClear">모든 이벤트 해제</button></div>
-    <div class="sec">명령어 입력</div>
-    <div class="row"><input id="cmdIn" placeholder="/도움말" autocomplete="off" aria-label="관리자 명령어"><button id="cmdRun" style="flex:0 0 auto;padding:12px 18px">실행</button></div>
-    <div class="notice" id="cmdOut"></div>
     <div class="sec">베팅금 전체 지급/차감 (모든 참가자에게 한 번에)</div>
     <div class="row"><input id="giveAll" type="number" placeholder="±금액 (예: 500 / -300)" aria-label="전체 지급 금액"></div>
     <div class="row" style="margin-top:8px"><button id="giveAllBtn">전원에게 지급/차감</button></div>
@@ -117,7 +87,7 @@ select{width:100%;padding:11px 12px;border:1px solid var(--bd);border-radius:10p
     <div class="row" style="margin-top:8px"><input id="giveOne" type="number" placeholder="±금액 (예: 500 / -300)" aria-label="지급 금액"><button id="giveOneBtn" style="flex:0 0 auto;padding:12px 18px">지급</button></div>
     <div class="sec">참가자별 설정</div>
     <div id="admList"></div>
-    <div class="row" style="margin-top:10px"><button class="alt" id="admSeason">시즌 리셋</button><button class="alt" id="admReset">전체 초기화</button><button class="alt" id="admOut">나가기</button></div>
+    <div class="row" style="margin-top:10px"><button class="alt" id="admReset">전체 초기화</button><button class="alt" id="admOut">나가기</button></div>
   </section>
 </main>
 
@@ -130,16 +100,10 @@ const START = 1000;
 const WIN_RATE = 0.3; // 성공 확률 (0~1)
 const PAYOUT = 2;     // 성공 시 건 금액의 몇 배를 얻는지
 let db = false, uid = null, me = null, busy = false, isAdmin = false, allPlayers = [];
-let cfg = { winRate: WIN_RATE, payout: PAYOUT, maxBet: 0, betLocked: false, stockHalt: false, notice: "", mods: {} };
-let lastErr = "";
-function emptyMsg(){
-  if (!FIREBASE_URL) return "서버 주소(FIREBASE_URL)가 비어 있어요. 코드 위쪽에 Firebase 주소를 넣고 다시 올려야 해요.";
-  if (lastErr) return "서버에서 목록을 가져오지 못했어요 (" + lastErr + "). 주소가 맞는지, Firebase Rules의 .read/.write가 true인지 확인하세요.";
-  return "서버에는 연결됐지만 아직 등록된 참가자가 없어요. 참가자가 닉네임으로 가입해야 목록에 나타나요.";
-}
+let cfg = { winRate: WIN_RATE, payout: PAYOUT };
 const $ = id => document.getElementById(id);
 const fmt = n => Number(n).toLocaleString("ko-KR");
-const score = p => Math.round(p.points + holdValue(p) - (p.resets || 0) * START); // 랭킹 점수 = 보유 포인트 + 주식 평가액 - 재시작 횟수 x 시작 포인트
+const score = p => p.points - (p.resets || 0) * START; // 랭킹 점수 = 보유 포인트 - 재시작 횟수 x 시작 포인트
 
 function lsGet(){ try { return JSON.parse(localStorage.getItem("bet-me")); } catch(e){ return null; } }
 function lsSet(){ try { localStorage.setItem("bet-me", JSON.stringify(me)); } catch(e){} }
@@ -155,8 +119,7 @@ async function save(){
 
 function showGame(){
   $("join").classList.add("hide");
-  $("tabs").classList.remove("hide");
-  showTab("bet");
+  $("game").classList.remove("hide");
   render();
 }
 
@@ -164,10 +127,9 @@ function render(){
   $("who").textContent = me.name + " 님";
   $("pts").textContent = fmt(me.points) + "P";
   $("rec").textContent = me.wins + "승 " + me.losses + "패 · 재시작 " + (me.resets || 0) + "회";
-  $("reset").classList.toggle("hide", me.points >= 10 || hasHold(me));
+  $("reset").classList.toggle("hide", me.points >= 10);
   $("go").disabled = me.points < 10;
   updateOdds();
-  updateStock();
 }
 
 function renderRank(list){
@@ -192,7 +154,7 @@ async function syncMe(){
     if (o && o.name) { me = o; lsSet(); render(); return true; }
     me = null;
     try { localStorage.removeItem("bet-me"); } catch(e){}
-    $("game").classList.add("hide"); $("stock").classList.add("hide"); $("tabs").classList.add("hide"); $("join").classList.remove("hide");
+    $("game").classList.add("hide"); $("join").classList.remove("hide");
     return false;
   } catch(e){ return true; }
 }
@@ -205,8 +167,7 @@ async function sha(t){
 async function api(method, path, body){
   if (!FIREBASE_URL) { alert("서버 주소(FIREBASE_URL)를 먼저 설정해야 해요."); return; }
   try {
-    const r = await fetch(FIREBASE_URL + path + ".json", { method, body: body ? JSON.stringify(body) : undefined });
-    if (!r.ok) { alert("요청에 실패했어요. (HTTP " + r.status + ") Firebase Rules가 true인지 확인하세요."); return; }
+    await fetch(FIREBASE_URL + path + ".json", { method, body: body ? JSON.stringify(body) : undefined });
     await loadRank();
   } catch(e){ alert("요청에 실패했어요."); }
 }
@@ -222,23 +183,8 @@ async function loadCfg(){
     const c = await (await fetch(FIREBASE_URL + "/config.json")).json();
     if (c && typeof c.winRate === "number") cfg.winRate = Math.min(1, Math.max(0, c.winRate));
     if (c && typeof c.payout === "number" && c.payout > 0) cfg.payout = c.payout;
-    cfg.maxBet = c && c.maxBet > 0 ? Math.floor(c.maxBet) : 0;
-    cfg.betLocked = !!(c && c.betLocked);
-    cfg.stockHalt = !!(c && c.stockHalt);
-    cfg.notice = (c && c.notice) || "";
-    cfg.mods = (c && c.mods) || {};
   } catch(e){}
   updateOdds();
-  refreshCfgUI();
-}
-
-function refreshCfgUI(){
-  const b = $("banner");
-  b.textContent = cfg.notice ? "📢 " + cfg.notice : "";
-  b.classList.toggle("hide", !cfg.notice);
-  $("tgBet").textContent = "베팅 잠금: " + (cfg.betLocked ? "켜짐" : "꺼짐");
-  $("tgStock").textContent = "주식 거래 정지: " + (cfg.stockHalt ? "켜짐" : "꺼짐");
-  updateStock();
 }
 
 function needServer(){
@@ -295,7 +241,7 @@ function fillTargets(){
   const cur = allPlayers.find(p => p.key === giveKey);
   $("giveChosen").textContent = cur ? "선택: " + cur.name + " (" + fmt(cur.points) + "P)" : "선택된 참가자가 없어요.";
   if (!$("giveSearch").value.trim()) { box.textContent = "이름을 입력하면 검색 결과가 나와요."; return; }
-  if (!allPlayers.length) { box.textContent = emptyMsg(); return; }
+  if (!allPlayers.length) { box.textContent = "참가자 목록이 비어 있어요. 서버 주소(FIREBASE_URL)와 인터넷 연결을 확인하세요."; return; }
   const hits = findHits().slice(0, 8);
   if (!hits.length) { box.textContent = "일치하는 참가자가 없어요. (현재 참가자 " + allPlayers.length + "명)"; return; }
   hits.forEach(p => {
@@ -316,22 +262,20 @@ function renderAdmin(){
   fillTargets();
   const box = $("admList");
   box.textContent = "";
-  if (!allPlayers.length) { box.textContent = emptyMsg(); return; }
+  if (!allPlayers.length) { box.textContent = "참가자가 없어요."; return; }
   allPlayers.forEach(p => {
     const row = document.createElement("div"); row.className = "admp";
     const head = document.createElement("div"); head.style.fontWeight = "600";
     const has = typeof p.winRate === "number";
-    head.textContent = p.name + " · " + fmt(p.points) + "P · 재시작 " + (p.resets || 0) + "회" + (p.frozen ? " · 🚫정지" : "") + (has ? " · 개인 확률 " + Math.round(p.winRate * 100) + "%" : "");
+    head.textContent = p.name + " · " + fmt(p.points) + "P · 재시작 " + (p.resets || 0) + "회" + (has ? " · 개인 확률 " + Math.round(p.winRate * 100) + "%" : "");
     const del = document.createElement("button"); del.className = "alt"; del.textContent = "참가자 삭제"; del.style.marginTop = "6px";
     del.onclick = () => { if (confirm(p.name + " 님을 삭제할까요?")) api("DELETE", "/players/" + p.key); };
-    const fz = document.createElement("button"); fz.className = "alt"; fz.style.cssText = "margin:6px 0 0 6px"; fz.textContent = p.frozen ? "정지 해제" : "계정 정지";
-    fz.onclick = () => api("PATCH", "/players/" + p.key, { frozen: p.frozen ? null : true });
     row.append(head,
       grp("포인트", "설정값", p.points, [["적용", i => setPts(p.key, i)]]),
       grp("베팅금 지급", "±금액", "", [["반영", i => adjust(p.key, i)]]),
       grp("확률 %", "개인 확률", has ? Math.round(p.winRate * 100) : "", [["적용", i => setRate(p.key, i)], ["해제", () => api("PATCH", "/players/" + p.key, { winRate: null }), true]]),
       grp("재시작", "횟수", p.resets || 0, [["적용", i => { if (i.value === "") { alert("값을 입력하세요."); return; } api("PATCH", "/players/" + p.key, { resets: Math.max(0, Math.floor(num(i))) }); }]]),
-      del, fz);
+      del);
     box.append(row);
   });
 }
@@ -346,14 +290,14 @@ $("admBtn").onclick = async () => {
   if ((await sha(pw)) !== ADMIN_HASH) { alert("비밀번호가 틀렸어요."); return; }
   isAdmin = true; $("admin").classList.remove("hide"); $("admBtn").textContent = "🔓 관리자 모드 켜짐";
   await loadCfg();
-  $("cfgRate").value = Math.round(cfg.winRate * 100); $("cfgPay").value = cfg.payout; $("cfgMax").value = cfg.maxBet;
+  $("cfgRate").value = Math.round(cfg.winRate * 100); $("cfgPay").value = cfg.payout;
   renderAdmin();
 };
 $("admOut").onclick = closeAdmin;
 $("giveOneBtn").onclick = () => {
   if (!giveKey) autoPick();
   if (!giveKey) {
-    alert(allPlayers.length ? "검색 결과에서 지급할 참가자를 눌러 선택하세요. (같은 이름이 여러 명이면 하나를 골라야 해요)" : emptyMsg());
+    alert(allPlayers.length ? "검색 결과에서 지급할 참가자를 눌러 선택하세요. (같은 이름이 여러 명이면 하나를 골라야 해요)" : "참가자 목록을 불러오지 못했어요. 서버 주소(FIREBASE_URL)와 인터넷 연결을 확인하세요.");
     return;
   }
   adjust(giveKey, $("giveOne"));
@@ -377,7 +321,7 @@ $("cfgSave").onclick = async () => {
   if ($("cfgRate").value === "" || !(r >= 0 && r <= 100)) { alert("성공 확률은 0~100 사이로 입력하세요."); return; }
   if (!(m > 0)) { alert("성공 배수는 0보다 커야 해요."); return; }
   if (needServer()) return;
-  await api("PATCH", "/config", { winRate: r / 100, payout: m, maxBet: Math.max(0, Math.floor(Number($("cfgMax").value) || 0)) });
+  await api("PUT", "/config", { winRate: r / 100, payout: m });
   await loadCfg();
 };
 $("admReset").onclick = () => { if (confirm("모든 참가자 기록을 삭제할까요? 되돌릴 수 없어요.")) api("DELETE", "/players"); };
@@ -385,16 +329,11 @@ $("admReset").onclick = () => { if (confirm("모든 참가자 기록을 삭제�
 async function loadRank(){
   try {
     const r = await fetch(FIREBASE_URL + "/players.json");
-    if (!r.ok) throw new Error("HTTP " + r.status);
     const o = (await r.json()) || {};
-    lastErr = "";
     allPlayers = Object.entries(o).filter(([k, p]) => p && p.name).map(([k, p]) => ({ ...p, key: k })).sort((x, y) => score(y) - score(x));
     renderRank(allPlayers.slice(0, 20));
     if (isAdmin && !$("admin").contains(document.activeElement)) renderAdmin();
-  } catch(e){
-    lastErr = (e && e.message) || "연결 실패";
-    $("notice").textContent = "랭킹을 불러오지 못했어요. (" + lastErr + ")";
-  }
+  } catch(e){ $("notice").textContent = "랭킹을 불러오지 못했어요."; }
 }
 
 async function init(){
@@ -405,7 +344,7 @@ async function init(){
     db = true;
     loadCfg();
     if (me) await syncMe();
-    loadRank(); setInterval(() => { loadRank(); loadCfg(); }, 5000);
+    loadRank(); setInterval(loadRank, 5000);
   } else {
     renderRank(me ? [{ ...me }] : []);
     $("notice").textContent = "서버 주소가 설정되지 않아 이 기기에서만 기록돼요.";
@@ -430,9 +369,6 @@ $("go").onclick = async () => {
   const raw = $("amt").value.replace(/^\s*!?(배팅|베팅)\s*/, "").trim();
   const amt = raw === "올인" ? me.points : Math.floor(Number(raw.replace(/,/g, "")));
   const m = $("msg");
-  if (me.frozen) { m.className = "msg no"; m.textContent = "관리자에 의해 정지된 계정이에요."; return; }
-  if (cfg.betLocked) { m.className = "msg no"; m.textContent = "지금은 베팅이 잠겨 있어요. 잠시 뒤에 다시 해보세요."; return; }
-  if (cfg.maxBet > 0 && amt > cfg.maxBet) { m.className = "msg no"; m.textContent = "한 번에 최대 " + fmt(cfg.maxBet) + "P까지 걸 수 있어요."; return; }
   if (!(amt >= 10)) { m.className = "msg no"; m.textContent = "최소 10P부터 걸 수 있어요."; return; }
   if (amt > me.points) { m.className = "msg no"; m.textContent = "보유 포인트보다 많이 걸 수 없어요."; return; }
   busy = true;
@@ -446,265 +382,9 @@ $("go").onclick = async () => {
 };
 
 $("reset").onclick = async () => {
-  me.points = START; me.hold = {}; me.resets = (me.resets || 0) + 1; render(); await save();
+  me.points = START; me.resets = (me.resets || 0) + 1; render(); await save();
   if (!(db && uid)) renderRank([{ ...me }]);
 };
-
-// ===== 가짜 주식 =====
-// 가격은 시간으로만 계산돼요. 서버 없이도 모든 참가자가 같은 가격을 봐요.
-const STOCKS = [
-  { id: "A", name: "은하철강", base: 100, vol: 0.40, seed: 1 },
-  { id: "B", name: "하늘물류", base: 60,  vol: 0.30, seed: 2 },
-  { id: "C", name: "미래건설", base: 200, vol: 0.55, seed: 3 },
-  { id: "D", name: "단비섬유", base: 80,  vol: 0.50, seed: 4 },
-  { id: "E", name: "새벽해운", base: 150, vol: 0.35, seed: 5 },
-  { id: "F", name: "나래항공", base: 250, vol: 0.60, seed: 6 },
-  { id: "G", name: "한울제지", base: 45,  vol: 0.25, seed: 7 },
-  { id: "H", name: "두루가구", base: 120, vol: 0.45, seed: 8 },
-  { id: "I", name: "온누리유통", base: 70,  vol: 0.30, seed: 9 },
-  { id: "J", name: "청솔자동차", base: 180, vol: 0.50, seed: 10 }
-];
-const TICK = 5000;   // 가격이 바뀌는 간격 (밀리초)
-const SELL_KEEP = 0.99; // 팔 때 수수료 1%
-function hash(n){ n = (n ^ 61) ^ (n >>> 16); n = (n + (n << 3)) | 0; n ^= n >>> 4; n = Math.imul(n, 0x27d4eb2d); n ^= n >>> 15; return (n >>> 0) / 4294967296; }
-function priceAt(st, k){
-  const trend = Math.sin(k / 37 + st.seed * 1.7) * 0.5 + Math.sin(k / 11 + st.seed * 3.1) * 0.3;
-  const noise = (hash(k * 131 + st.seed * 7919) - 0.5) * 0.12 + (hash(Math.floor(k / 3) * 977 + st.seed * 104729) - 0.5) * 0.10;
-  let p = st.base * Math.exp(st.vol * (trend * 0.6 + noise));
-  const md = cfg.mods && cfg.mods[st.id], tm = k * TICK;
-  if (md && tm >= md.from && tm < md.until) p *= md.m; // 관리자 호재/악재 이벤트
-  return Math.max(5, Math.round(p * 10) / 10);
-}
-const tickNow = () => Math.floor(Date.now() / TICK);
-const priceNow = st => priceAt(st, tickNow());
-function holdValue(p){
-  return Object.entries((p && p.hold) || {}).reduce((a, [id, q]) => { const st = STOCKS.find(x => x.id === id); return a + (st ? q * priceNow(st) : 0); }, 0);
-}
-function hasHold(p){ return Object.values((p && p.hold) || {}).some(q => q > 0); }
-
-const rows = {};
-function buildStock(){
-  const list = $("sList");
-  STOCKS.forEach(st => {
-    const r = document.createElement("div"); r.className = "sr";
-    const top = document.createElement("div"); top.className = "top";
-    const nm = document.createElement("strong"); nm.textContent = st.name;
-    const pr = document.createElement("span");
-    top.append(nm, pr);
-    const NS = "http://www.w3.org/2000/svg";
-    const svg = document.createElementNS(NS, "svg"); svg.setAttribute("viewBox", "0 0 100 30"); svg.setAttribute("preserveAspectRatio", "none");
-    const line = document.createElementNS(NS, "polyline");
-    line.setAttribute("fill", "none"); line.setAttribute("stroke", "var(--ac)"); line.setAttribute("stroke-width", "1.6"); line.setAttribute("vector-effect", "non-scaling-stroke");
-    svg.append(line);
-    const held = document.createElement("div"); held.className = "notice";
-    const g = document.createElement("div"); g.className = "row";
-    const q = document.createElement("input"); q.type = "number"; q.min = 1; q.value = 1; q.style.flex = "1 1 70px"; q.style.width = "auto"; q.setAttribute("aria-label", st.name + " 수량");
-    const buy = document.createElement("button"); buy.textContent = "매수"; buy.onclick = () => trade(st.id, "buy", q);
-    const sell = document.createElement("button"); sell.className = "alt"; sell.textContent = "매도"; sell.onclick = () => trade(st.id, "sell", q);
-    g.append(q, buy, sell);
-    r.append(top, svg, held, g); list.append(r);
-    rows[st.id] = { pr, line, held };
-  });
-}
-
-function updateStock(){
-  const k = tickNow();
-  $("sTick").textContent = "다음 가격 변동까지 " + Math.ceil(((k + 1) * TICK - Date.now()) / 1000) + "초";
-  STOCKS.forEach(st => {
-    const R = rows[st.id]; if (!R) return;
-    const p = priceAt(st, k), prev = priceAt(st, k - 1), ch = (p - prev) / prev * 100;
-    R.pr.textContent = p.toFixed(1) + "P " + (ch >= 0 ? "▲" : "▼") + Math.abs(ch).toFixed(1) + "%";
-    R.pr.style.color = ch >= 0 ? "var(--no)" : "#2563eb";
-    const pts = []; for (let i = 39; i >= 0; i--) pts.push(priceAt(st, k - i));
-    const mn = Math.min(...pts), mx = Math.max(...pts);
-    R.line.setAttribute("points", pts.map((v, i) => (i * 100 / 39).toFixed(1) + "," + (28 - (v - mn) / ((mx - mn) || 1) * 26).toFixed(1)).join(" "));
-    const have = (me && me.hold && me.hold[st.id]) || 0;
-    R.held.textContent = "보유 " + have + "주" + (have ? " · 평가액 " + fmt(Math.round(have * p)) + "P" : "");
-  });
-  if (me) { $("sWho").textContent = me.name + " 님"; $("sPts").textContent = fmt(me.points) + "P"; $("sVal").textContent = fmt(Math.round(holdValue(me))) + "P"; }
-}
-
-async function trade(id, side, qInput){
-  if (busy) return;
-  const m = $("sMsg"), q = Math.floor(Number(qInput.value));
-  if (!(q >= 1)) { m.className = "msg no"; m.textContent = "수량은 1주 이상 입력하세요."; return; }
-  busy = true; const [synced] = await Promise.all([syncMe(), loadCfg()]); busy = false;
-  if (!synced) { m.className = "msg no"; m.textContent = "관리자에 의해 초기화됐어요. 닉네임부터 다시 시작해 주세요."; return; }
-  if (me.frozen) { m.className = "msg no"; m.textContent = "관리자에 의해 정지된 계정이에요."; return; }
-  if (cfg.stockHalt) { m.className = "msg no"; m.textContent = "지금은 주식 거래가 정지돼 있어요."; return; }
-  const st = STOCKS.find(x => x.id === id), p = priceNow(st);
-  me.hold = me.hold || {};
-  const have = me.hold[id] || 0;
-  if (side === "buy") {
-    const cost = Math.ceil(p * q);
-    if (cost > me.points) { m.className = "msg no"; m.textContent = "포인트가 부족해요. (필요 " + fmt(cost) + "P)"; return; }
-    me.points -= cost; me.hold[id] = have + q;
-    m.className = "msg ok"; m.textContent = st.name + " " + q + "주 매수 · -" + fmt(cost) + "P";
-  } else {
-    if (q > have) { m.className = "msg no"; m.textContent = "보유한 수량보다 많이 팔 수 없어요. (보유 " + have + "주)"; return; }
-    const get = Math.floor(p * q * SELL_KEEP);
-    me.points += get; me.hold[id] = have - q; if (!me.hold[id]) delete me.hold[id];
-    m.className = "msg ok"; m.textContent = st.name + " " + q + "주 매도 · +" + fmt(get) + "P (수수료 1%)";
-  }
-  render();
-  await save();
-  if (!(db && uid)) renderRank([{ ...me }]);
-}
-
-function showTab(t){
-  $("game").classList.toggle("hide", t !== "bet");
-  $("stock").classList.toggle("hide", t !== "stock");
-  $("tabBet").classList.toggle("sel", t === "bet");
-  $("tabStock").classList.toggle("sel", t === "stock");
-}
-$("tabBet").onclick = () => showTab("bet");
-$("tabStock").onclick = () => showTab("stock");
-// ===== 관리자 도구 =====
-async function setCfg(o){ await api("PATCH", "/config", o); await loadCfg(); }
-async function setMod(id, mult, minutes){
-  if (needServer()) return;
-  const from = Math.floor(Date.now() / TICK) * TICK; // 지금 가격 틱부터 바로 적용
-  await api("PUT", "/config/mods/" + id, { m: mult, from, until: from + minutes * 60000 });
-  await loadCfg();
-}
-async function clearMod(id){
-  if (needServer()) return;
-  await api("DELETE", id ? "/config/mods/" + id : "/config/mods");
-  await loadCfg();
-}
-async function addPoints(key, d){
-  if (needServer()) return false;
-  try {
-    const u = FIREBASE_URL + "/players/" + key + ".json";
-    const o = await (await fetch(u)).json();
-    if (!o) return false;
-    const r = await fetch(u, { method: "PATCH", body: JSON.stringify({ points: Math.max(0, Math.floor(o.points + d)) }) });
-    if (!r.ok) throw new Error("HTTP " + r.status);
-    await loadRank(); return true;
-  } catch(e){ alert("요청에 실패했어요."); return false; }
-}
-async function giveAllAmt(d){
-  if (needServer()) return false;
-  try {
-    const o = (await (await fetch(FIREBASE_URL + "/players.json")).json()) || {};
-    const upd = {};
-    Object.entries(o).forEach(([k, p]) => { if (p && p.name) upd["players/" + k + "/points"] = Math.max(0, Math.floor(p.points + d)); });
-    const r = await fetch(FIREBASE_URL + "/.json", { method: "PATCH", body: JSON.stringify(upd) });
-    if (!r.ok) throw new Error("HTTP " + r.status);
-    await loadRank(); return Object.keys(upd).length;
-  } catch(e){ alert("요청에 실패했어요."); return false; }
-}
-async function seasonReset(){
-  if (needServer()) return false;
-  try {
-    const o = (await (await fetch(FIREBASE_URL + "/players.json")).json()) || {};
-    const upd = {};
-    Object.entries(o).forEach(([k, p]) => {
-      if (!p || !p.name) return;
-      const b = "players/" + k + "/";
-      upd[b + "points"] = START; upd[b + "wins"] = 0; upd[b + "losses"] = 0; upd[b + "resets"] = 0; upd[b + "hold"] = null;
-    });
-    const r = await fetch(FIREBASE_URL + "/.json", { method: "PATCH", body: JSON.stringify(upd) });
-    if (!r.ok) throw new Error("HTTP " + r.status);
-    await loadRank(); return true;
-  } catch(e){ alert("요청에 실패했어요."); return false; }
-}
-
-function pickPlayer(name){
-  const q = norm(name);
-  if (!q) return { err: "이름을 입력하세요." };
-  let h = allPlayers.filter(p => norm(p.name) === q);
-  if (!h.length) h = allPlayers.filter(p => norm(p.name).includes(q));
-  if (!h.length) return { err: "참가자를 찾지 못했어요: " + name };
-  if (h.length > 1) return { err: "같은 이름이 여러 명이에요: " + h.map(p => p.name + "(" + fmt(p.points) + "P)").join(", ") + " · 더 정확히 입력하세요." };
-  return { p: h[0] };
-}
-const stockOf = t => STOCKS.find(s => s.id === String(t || "").toUpperCase() || s.name === t || (t && s.name.includes(t)));
-const HELP = "/지급 이름 금액 · /전체지급 금액 · /확률 퍼센트 · /배수 숫자 · /한도 금액(0=무제한) · /개인확률 이름 퍼센트|해제 · /공지 내용 · /공지삭제 · /호재 종목 [분] · /악재 종목 [분] · /이벤트해제 [종목] · /거래정지 · /거래재개 · /베팅잠금 · /베팅해제 · /정지 이름 · /정지해제 이름 · /시즌리셋";
-
-async function runCmd(line){
-  const parts = line.trim().replace(/^[\/!]/, "").split(/\s+/).filter(Boolean);
-  const c = parts[0], a = parts.slice(1), out = x => { $("cmdOut").textContent = x; };
-  if (!c) return;
-  if (c === "도움말") { out(HELP); return; }
-  if (needServer()) return;
-  const last = Number(a[a.length - 1]), nameOf = n => a.slice(0, a.length - n).join(" ");
-  const pct = () => Math.min(90, Math.max(1, Number($("modPct").value) || 30));
-  if (c === "지급") {
-    const d = Math.floor(last); if (!d) { out("사용법: /지급 이름 금액 (차감은 -금액)"); return; }
-    const r = pickPlayer(nameOf(1)); if (r.err) { out(r.err); return; }
-    if (await addPoints(r.p.key, d)) out(r.p.name + " 님에게 " + fmt(d) + "P 반영했어요.");
-  } else if (c === "전체지급") {
-    const d = Math.floor(last); if (!d) { out("사용법: /전체지급 금액"); return; }
-    const n = await giveAllAmt(d); if (n !== false) out("참가자 " + n + "명에게 " + fmt(d) + "P 반영했어요.");
-  } else if (c === "확률") {
-    if (!(last >= 0 && last <= 100)) { out("사용법: /확률 0~100"); return; }
-    await setCfg({ winRate: last / 100 }); out("전체 성공 확률을 " + last + "%로 바꿨어요.");
-  } else if (c === "배수") {
-    if (!(last > 0)) { out("사용법: /배수 숫자 (0보다 크게)"); return; }
-    await setCfg({ payout: last }); out("성공 배수를 " + last + "배로 바꿨어요.");
-  } else if (c === "한도") {
-    if (!(last >= 0)) { out("사용법: /한도 금액 (0이면 무제한)"); return; }
-    await setCfg({ maxBet: Math.floor(last) }); out(last > 0 ? "최대 베팅 한도를 " + fmt(Math.floor(last)) + "P로 정했어요." : "베팅 한도를 없앴어요.");
-  } else if (c === "개인확률") {
-    const off = a[a.length - 1] === "해제";
-    if (!off && !(last >= 0 && last <= 100)) { out("사용법: /개인확률 이름 퍼센트 (또는 해제)"); return; }
-    const r = pickPlayer(nameOf(1)); if (r.err) { out(r.err); return; }
-    await api("PATCH", "/players/" + r.p.key, { winRate: off ? null : last / 100 });
-    out(r.p.name + " 님 개인 확률 " + (off ? "해제" : last + "%") + " 완료.");
-  } else if (c === "공지") {
-    const t = a.join(" ").slice(0, 80); if (!t) { out("사용법: /공지 내용"); return; }
-    await setCfg({ notice: t }); out("공지를 게시했어요.");
-  } else if (c === "공지삭제") {
-    await setCfg({ notice: "" }); out("공지를 내렸어요.");
-  } else if (c === "호재" || c === "악재") {
-    const st = stockOf(a[0]); if (!st) { out("종목을 찾지 못했어요. 종목: " + STOCKS.map(s => s.name).join(", ")); return; }
-    const min = Math.max(1, Number(a[1]) || Number($("modMin").value) || 10);
-    await setMod(st.id, c === "호재" ? 1 + pct() / 100 : 1 - pct() / 100, min);
-    out(st.name + " " + c + " " + pct() + "% 적용 (" + min + "분)");
-  } else if (c === "이벤트해제") {
-    const st = a[0] ? stockOf(a[0]) : null; if (a[0] && !st) { out("종목을 찾지 못했어요."); return; }
-    await clearMod(st ? st.id : null); out(st ? st.name + " 이벤트를 해제했어요." : "모든 주가 이벤트를 해제했어요.");
-  } else if (c === "거래정지" || c === "거래재개") {
-    await setCfg({ stockHalt: c === "거래정지" }); out(c === "거래정지" ? "주식 거래를 정지했어요." : "주식 거래를 재개했어요.");
-  } else if (c === "베팅잠금" || c === "베팅해제") {
-    await setCfg({ betLocked: c === "베팅잠금" }); out(c === "베팅잠금" ? "베팅을 잠갔어요." : "베팅 잠금을 풀었어요.");
-  } else if (c === "정지" || c === "정지해제") {
-    const r = pickPlayer(a.join(" ")); if (r.err) { out(r.err); return; }
-    await api("PATCH", "/players/" + r.p.key, { frozen: c === "정지" ? true : null });
-    out(r.p.name + " 님 계정을 " + (c === "정지" ? "정지" : "정지 해제") + "했어요.");
-  } else if (c === "시즌리셋") {
-    if (confirm("모든 참가자의 포인트·주식·재시작 횟수를 처음 상태로 되돌릴까요? (참가자는 남아요)") && await seasonReset()) out("시즌을 리셋했어요.");
-  } else { out("알 수 없는 명령어예요. /도움말을 입력해 보세요."); }
-}
-
-function buildModBox(){
-  const box = $("modBox");
-  const pct = () => Math.min(90, Math.max(1, Number($("modPct").value) || 30)), mins = () => Math.max(1, Number($("modMin").value) || 10);
-  const mk = (t, fn, alt) => { const b = document.createElement("button"); if (alt) b.className = "alt"; b.textContent = t; b.style.cssText = "flex:0 0 auto;padding:8px 12px;font-size:13px"; b.onclick = fn; return b; };
-  STOCKS.forEach(st => {
-    const row = document.createElement("div"); row.className = "row"; row.style.marginTop = "6px";
-    const nm = document.createElement("span"); nm.textContent = st.name; nm.style.cssText = "flex:1 1 90px;align-self:center;font-size:14px";
-    row.append(nm, mk("호재", () => setMod(st.id, 1 + pct() / 100, mins())), mk("악재", () => setMod(st.id, 1 - pct() / 100, mins()), true), mk("해제", () => clearMod(st.id), true));
-    box.append(row);
-  });
-}
-buildModBox();
-$("tgBet").onclick = () => setCfg({ betLocked: !cfg.betLocked });
-$("tgStock").onclick = () => setCfg({ stockHalt: !cfg.stockHalt });
-$("noticeSet").onclick = () => { const t = $("noticeIn").value.trim(); if (!t) { alert("공지 내용을 입력하세요."); return; } setCfg({ notice: t.slice(0, 80) }); };
-$("noticeDel").onclick = () => setCfg({ notice: "" });
-$("modClear").onclick = () => clearMod(null);
-$("admSeason").onclick = () => { if (confirm("모든 참가자의 포인트·주식·재시작 횟수를 처음 상태로 되돌릴까요? (참가자는 남아요)")) seasonReset(); };
-$("cmdRun").onclick = async () => {
-  const v = $("cmdIn").value; $("cmdOut").textContent = "실행 중…";
-  try { await runCmd(v); } catch(e){ $("cmdOut").textContent = "실패했어요: " + ((e && e.message) || e); }
-  $("cmdIn").value = "";
-};
-$("cmdIn").addEventListener("keydown", e => { if (e.key === "Enter") $("cmdRun").click(); });
-
-buildStock();
-setInterval(updateStock, 1000);
 
 init();
 </script>
